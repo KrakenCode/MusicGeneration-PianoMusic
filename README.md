@@ -4,7 +4,7 @@
 
 <div style="text-align:right"><img src="kraken_3.png" height="130"></div>
 
- 
+
 **KrakenKeys** is a research project exploring the role of artificial intelligence in developing
 new musical compositions given a theme or genre.  Primarily this involves using algorithms such as
 recurrent neural network, and lstm for generating musical notes.  It also involved using open source
@@ -40,7 +40,7 @@ pip3 install music21
 
 For our project we used timidity to play our midi files.
 
-These instructions will assume you have **Ubuntu** or **Mac OS X**. 
+These instructions will assume you have **Ubuntu** or **Mac OS X**.
 ### Install Timidity
 
 If you are running **Ubuntu**, you can just paste the following command into your terminal.
@@ -60,6 +60,6 @@ brew install timidity
 ```
 timidity <midi file>
 ```
-## Our Demo 
+## Our Demo
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/IDTTb6FbX-k/0.jpg)](http://www.youtube.com/watch?v=IDTTb6FbX-k)
