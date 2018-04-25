@@ -15,7 +15,7 @@ creative tool for artists with artists block.
 ## Getting Started
 
 * [Installation](#installation)
-* [Using KrakenKeys] (#using-krakenkeys)
+* [Using KrakenKeys](#using-krakenkeys)
 * [Playing a Midi](#playing-a-midi)
 * [Our Results](#our-results)
 
@@ -24,7 +24,7 @@ creative tool for artists with artists block.
 
 These instructions will assume you are using Anaconda and TensorFlow.
 
-If you do not have [Anaconda] (https://conda.io/docs/user-guide/install/index.html) and [TensorFlow] (https://www.tensorflow.org/install/) install it first.
+If you do not have [Anaconda](https://conda.io/docs/user-guide/install/index.html) and [TensorFlow](https://www.tensorflow.org/install/) install it first.
 
 
 ### Install Music21
