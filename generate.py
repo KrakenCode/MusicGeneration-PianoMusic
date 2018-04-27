@@ -5,6 +5,9 @@
 from music21 import instrument, note, stream, chord
 import numpy as np
 from model import get_tokenized_notes, clean_lines
+import model as md
+import sys
+import os
 
 MAXLEN = 5
 
@@ -81,11 +84,8 @@ def generate(primer_list, ctable, model):
 
 '''    
 def generate_long(primer_file, ctable, model, length=5):
-    
     lines = open(primer_file).readlines()
-    
     cl = clean_lines(lines)
-    
     primer_list = ' '.join(cl[0])
     last = cl[-1]
     
@@ -94,3 +94,23 @@ def generate_long(primer_file, ctable, model, length=5):
         primer_list += ' ' + last
         last = last.split(' ')
     return primer_list  
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: " + sys.argv[0] + " note_sequence_file model_name\n")
+        sys.exit(1)
+    
+    note_sequence = sys.argv[1]
+    model_name = sys.argv[2]
+
+    if model_name not in os.listdir():
+        print("Must run train_model.py before generating. Exiting...")
+        print("Usage: train_model.py model_name path_to_question&answer")
+        sys.exit(1)
+        
+    x, y, ctable, chars = md.prepare_dataset()
+    model = md.build_model(len(chars))
+    model.load_weights(model_name)
+    new_song = generate_long(note_sequence, ctable, model, 20)
+    music_objects=create_music_objects(new_song)
+    write_to_file(music_objects, "test.midi") # hard coded midi name
