@@ -45,7 +45,7 @@ To generate the question and answer files needed for training, run
 ```
 python create_dataset.py <path_to_dataset>
 ```
-Include a '\*\*' after the directory to ensure that create_Dataset.py 
+Include a '\*\*' after the directory to ensure that create_dataset.py 
 recursively grabs the midi files from the dataset. If you forget to include the '\*\*'s they will 
 be added anyway. 
 
