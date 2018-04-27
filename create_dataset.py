@@ -13,6 +13,7 @@ piano parts and parses those notes by converting them to strings. Returns a
 list of all the piano notes found.
 '''
 def parse_midi_files(input_data_directory):
+    print(input_data_directory)
     notes = [] # list of all notes from midi files
     # iterate over all the files in the given directory
     for file in tqdm(glob.glob(input_data_directory, recursive=True)):

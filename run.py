@@ -28,10 +28,11 @@ def run():
     if command in "dataset":                        # prepare the dataset
         input_data_directory = sys.argv[2]
         run_create_dataset(input_data_directory)
-    elif command in "train":                        # build and train the model
-        run_model_train()
+    elif command in "train":   # build and train the model
+        model_name = sys.argv[2]
+        run_model_train(model_name)
     elif command in "generate":                     # generate new music
-        if len(sys.argv != 4):
+        if len(sys.argv) != 4:
             print_usage()
             sys.exit(1)
         note_sequence = sys.argv[2]
@@ -53,11 +54,11 @@ def run_create_dataset(input_data_directory):
 '''
 Prepares the one-hot vectors for the model, and then builds and trains the model.
 '''
-def run_model_train():
+def run_model_train(model_name):
     x, y, ctable, chars = md.prepare_dataset()
-    model = md.build_model(MAXLEN)
+    model = md.build_model(len(chars))
     BATCH_SIZE = 128
-    md.train_model(model, ctable, x, y, BATCH_SIZE) # TODO what does batch_size need to be?
+    md.train_model(model, ctable, x, y, BATCH_SIZE,model_name)
 
 '''
 Generates new music given the output of the model and a note sequence.
@@ -74,7 +75,7 @@ def print_usage():
     print("Please run with one of the three following commands: dataset, train or generate\n")
     print("Usage: "+sys.argv[0]+"dataset path_to_midi_files")
     print("OR\t" + sys.argv[0] + "train model_name path_to_question&answer\n")
-    print("OR\t" + sys.argv[0] + "generate note_sequence model_name\n")
+    print("OR\t" + sys.argv[0] + "generate note_sequence_file model_name\n")
 
 if __name__ == "__main__":
     run()

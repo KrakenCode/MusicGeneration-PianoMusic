@@ -138,7 +138,7 @@ Train the model each generation and show predictions against the validation
 dataset. Takes the model, character table, questions (x) and answers (y), and 
 batch size as inputs.
 '''
-def train_model(model, ctable, x, y, BATCH_SIZE):
+def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
     # Shuffle (x, y) in unison as the later parts of x will almost all be larger
     # digits.
     indices = np.arange(len(y))
@@ -187,3 +187,4 @@ def train_model(model, ctable, x, y, BATCH_SIZE):
             else:
                 print(colors.fail + '☒' + colors.close, end=' ')
             print(guess)  
+    model.save_weights(model_name)
