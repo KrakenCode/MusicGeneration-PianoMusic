@@ -57,7 +57,12 @@ from the generate_dataset.py functions
 '''
 def get_all_notes(filename):
     # creates a set of all possible tokens (notes) the NN can use
-    file = open(filename)
+    try:
+        file = open(filename)
+    except:
+        print("Must run create_dataset.py before training model. Exiting...")
+        print("Usage: create_dataset.py path_to_midi_files")
+        sys.exit(1)
     notes = set()
     for line in file.readlines():
         line = line.rstrip()

@@ -4,10 +4,11 @@
 
 from music21 import instrument, note, stream, chord
 import numpy as np
-from model import get_tokenized_notes, clean_lines
-import model as md
+from train_model import get_tokenized_notes, clean_lines
+import train_model as md
 import sys
 import os
+import random
 
 MAXLEN = 5
 
@@ -83,34 +84,56 @@ def generate(primer_list, ctable, model):
 '''
 
 '''    
-def generate_long(primer_file, ctable, model, length=5):
-    lines = open(primer_file).readlines()
-    cl = clean_lines(lines)
-    primer_list = ' '.join(cl[0])
-    last = cl[-1]
-    
+def generate_long(note_sequence, ctable, model, length=5):
+    #lines = open(primer_file).readlines()
+    #cl = clean_lines(lines)
+    #primer_list = ' '.join(cl[0])
+    #last = cl[-1]
+    #primer_list = ' '.join(note_sequence[0])
+    #last = note_sequence[-1]
+    last = note_sequence.split(' ')
     for i in range(length):
         last = generate([last], ctable, model)[0]
-        primer_list += ' ' + last
+        note_sequence += ' ' + last
         last = last.split(' ')
-    return primer_list  
+    return note_sequence
+
+'''
+Selects a random five note starting sequence from
+either the answers.txt or questions.txt files
+'''
+def select_random_note_sequence():
+    if "answers.txt" in os.listdir():
+        notes = open("answers.txt").readlines()
+    elif "questions.txt" in os.listdir():
+        notes = open("questions.txt").readlines()        
+    else:
+        print("Need answers.txt or questions.txt to select random starting note sequence. Exiting... ")
+        print("Usage: create_dataset.py path_to_midi_files")
+    
+    note_sequence = random.choice(notes)
+    note_sequence = note_sequence.rstrip()        
+    return note_sequence
+        
+        
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: " + sys.argv[0] + " note_sequence_file model_name\n")
+        print("Usage: " + sys.argv[0] + " model_name path_to_questions&answer\n")
         sys.exit(1)
     
-    note_sequence = sys.argv[1]
-    model_name = sys.argv[2]
+    model_name = sys.argv[1]
+    path_to_qa = sys.argv[2]
 
     if model_name not in os.listdir():
         print("Must run train_model.py before generating. Exiting...")
         print("Usage: train_model.py model_name path_to_question&answer")
         sys.exit(1)
         
-    x, y, ctable, chars = md.prepare_dataset()
+    x, y, ctable, chars = md.prepare_dataset(path_to_qa)
     model = md.build_model(len(chars))
     model.load_weights(model_name)
+    note_sequence = select_random_note_sequence()
     new_song = generate_long(note_sequence, ctable, model, 20)
     music_objects=create_music_objects(new_song)
     write_to_file(music_objects, "test.midi") # hard coded midi name
