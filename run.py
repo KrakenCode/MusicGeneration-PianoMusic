@@ -59,17 +59,17 @@ def run_model_train(model_name):
     x, y, ctable, chars = md.prepare_dataset()
     model = md.build_model(len(chars))
     BATCH_SIZE = 128
-    md.train_model(model, ctable, x, y, BATCH_SIZE,model_name)
+    md.train_model(model, ctable, x, y, BATCH_SIZE, model_name)
 
 '''
 Generates new music given the output of the model and a note sequence.
 '''    
 def run_generate(note_sequence, model_name):
-    x, y, ctable, chars = md.prepare_dataset()
-    model = md.build_model(len(chars))
     if model_name not in os.listdir():
         print("Must train model before generating")
         sys.exit(1)
+    x, y, ctable, chars = md.prepare_dataset()
+    model = md.build_model(len(chars))
     model.load_weights(model_name)
     new_song = gen.generate_long(note_sequence, ctable, model, 20)
     music_objects=gen.create_music_objects(new_song)
@@ -80,9 +80,9 @@ Prints the usage.
 '''
 def print_usage():
     print("Please run with one of the three following commands: dataset, train or generate\n")
-    print("Usage: "+sys.argv[0]+"dataset path_to_midi_files")
-    print("OR\t" + sys.argv[0] + "train model_name path_to_question&answer\n")
-    print("OR\t" + sys.argv[0] + "generate note_sequence_file model_name\n")
+    print("Usage: "+ sys.argv[0]+"dataset path_to_midi_files")
+    print("OR\t " + sys.argv[0] + "train model_name path_to_question&answer\n")
+    print("OR\t " + sys.argv[0] + "generate note_sequence_file model_name\n")
 
 if __name__ == "__main__":
     run()
