@@ -8,8 +8,8 @@ import model as md
 import sys
 
 MAXLEN = 5
-ctable=[]   # character table
-model=[]    # the NN
+ctable=None   # character table
+model=None    # the NN
 
 '''
 Run the model with a different command depending on what step the user is one.
@@ -64,7 +64,9 @@ def run_model_train(model_name):
 Generates new music given the output of the model and a note sequence.
 '''    
 def run_generate(note_sequence, model_path):
-    new_song = gen.generate(note_sequence, ctable, model)
+    x, y, ctable, chars = md.prepare_dataset()
+    model = md.build_model(len(chars))
+    new_song = gen.generate_long(note_sequence, ctable, model, 20)
     music_objects=gen.create_music_objects(new_song)
     gen.write_to_file(music_objects, "test.midi") # hard coded midi name
 

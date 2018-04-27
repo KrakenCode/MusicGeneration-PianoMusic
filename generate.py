@@ -4,7 +4,7 @@
 
 from music21 import instrument, note, stream, chord
 import numpy as np
-from model import get_tokenized_notes
+from model import get_tokenized_notes, clean_lines
 
 MAXLEN = 5
 
@@ -65,7 +65,7 @@ def write_to_file(music_objects, file_name):
 '''
 def generate(primer_list, ctable, model):
     
-    questions = get_tokenized_notes(primer_list)
+    questions = primer_list
 
     x = np.zeros((len(questions), MAXLEN, len(ctable.chars)), dtype=np.bool)
     for i, sentence in enumerate(questions):
@@ -80,12 +80,17 @@ def generate(primer_list, ctable, model):
 '''
 
 '''    
-def generate_long(primer, length=5):
+def generate_long(primer_file, ctable, model, length=5):
     
-    primer_list = primer
-    last = primer
+    lines = open(primer_file).readlines()
+    
+    cl = clean_lines(lines)
+    
+    primer_list = ' '.join(cl[0])
+    last = cl[-1]
     
     for i in range(length):
-        last = generate([last])[0]
+        last = generate([last], ctable, model)[0]
         primer_list += ' ' + last
+        last = last.split(' ')
     return primer_list  

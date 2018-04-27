@@ -3,6 +3,7 @@ from keras.models import Sequential
 from keras import layers
 import numpy as np
 from six.moves import range
+import os
 
 MAXLEN = 5
 
@@ -63,6 +64,21 @@ def get_tokenized_notes(filename):
     file = open(filename)
     notes = []
     for line in file.readlines():
+        line = line.rstrip()
+        tokens = line.split(' ')
+        
+        if len(tokens) > MAXLEN:
+            tokens = tokens[:MAXLEN]
+        elif len(tokens) < MAXLEN:
+            tokens = tokens + [' '] * (MAXLEN-len(tokens))
+        
+        notes.append(tokens)
+    return notes
+
+def clean_lines(lines):
+    
+    notes = []
+    for line in lines:
         line = line.rstrip()
         tokens = line.split(' ')
         
@@ -160,7 +176,8 @@ def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
     print(y_val.shape)
     
     # check if this file does not exist and save
-    model.load_weights('musicmodelNOTELongChord.h5')
+    if model_name in os.listdir('C:/Users/Austin/MusicGeneration-PianoMusic'):
+        model.load_weights(model_name)
     # change 1000 to number of epochs variable
     for iteration in range(1000, 1):
         print()
