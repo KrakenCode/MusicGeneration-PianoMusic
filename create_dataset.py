@@ -5,6 +5,7 @@
 import glob
 from music21 import converter, instrument, note, chord
 from tqdm import tqdm
+import sys
 
 '''
 Parses midi and xml files in the given directory "input_data_directory." Converts
@@ -12,8 +13,20 @@ the file to instrument parts using music21 converter. Then pulls out only the
 piano parts and parses those notes by converting them to strings. Returns a
 list of all the piano notes found.
 '''
+def make_path_recursive(path):
+    if path[len(path)-3:] == '/**':
+        return path
+    else:
+        if path[len(path)-1:] == '/':
+            path += '**'
+        else:
+            path += '/**'
+        return path
+    
 def parse_midi_files(input_data_directory):
-    print(input_data_directory)
+    
+    input_data_directory = make_path_recursive(input_data_directory)
+    
     notes = [] # list of all notes from midi files
     # iterate over all the files in the given directory
     for file in tqdm(glob.glob(input_data_directory, recursive=True)):
@@ -94,3 +107,14 @@ def write_to_file(questions, answers):
 
     qfile.close()
     afile.close()
+      
+
+if __name__ == "__main__":
+    chunk_size = 5      # hard coded value
+    if (len(sys.argv) < 2):
+        print("Usage: "+ sys.argv[0]+ " path_to_midi_files")
+        sys.exit(1)
+    input_data_directory = sys.argv[1]
+    notes = parse_midi_files(input_data_directory)
+    questions, answers = split_into_question_answer(notes, chunk_size)
+    write_to_file(questions, answers)

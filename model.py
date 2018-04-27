@@ -176,7 +176,7 @@ def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
     print(y_val.shape)
     
     # check if this file does not exist and save
-    if model_name in os.listdir('C:/Users/Austin/MusicGeneration-PianoMusic'):
+    if model_name in os.listdir():
         model.load_weights(model_name)
     # change 1000 to number of epochs variable
     for iteration in range(1000, 1):

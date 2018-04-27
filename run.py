@@ -6,6 +6,7 @@ import create_dataset as data
 import generate as gen
 import model as md
 import sys
+import os
 
 MAXLEN = 5
 ctable=None   # character table
@@ -36,8 +37,8 @@ def run():
             print_usage()
             sys.exit(1)
         note_sequence = sys.argv[2]
-        model_path = sys.argv[3]
-        run_generate(note_sequence, model_path)
+        model_name = sys.argv[3]
+        run_generate(note_sequence, model_name)
     else:
         print_usage()
 '''
@@ -63,9 +64,13 @@ def run_model_train(model_name):
 '''
 Generates new music given the output of the model and a note sequence.
 '''    
-def run_generate(note_sequence, model_path):
+def run_generate(note_sequence, model_name):
     x, y, ctable, chars = md.prepare_dataset()
     model = md.build_model(len(chars))
+    if model_name not in os.listdir():
+        print("Must train model before generating")
+        sys.exit(1)
+    model.load_weights(model_name)
     new_song = gen.generate_long(note_sequence, ctable, model, 20)
     music_objects=gen.create_music_objects(new_song)
     gen.write_to_file(music_objects, "test.midi") # hard coded midi name
