@@ -17,7 +17,7 @@ creative tool for artists with artists block.
 * [Installation](#installation)
 * [Using KrakenKeys](#using-krakenkeys)
 * [Playing a Midi](#playing-a-midi)
-* [Our Demo](#our-Demo)
+* [Our Demo](#our-demo)
 * [Team Members](#team-members)
 
 ## Installation
