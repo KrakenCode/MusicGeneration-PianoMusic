@@ -12,9 +12,9 @@ class colors:
     ok = '\033[92m'
     fail = '\033[91m'
     close = '\033[0m'
-    
+
 '''
-Sets up vocabulary (character table) for encoding and decoding using the 
+Sets up vocabulary (character table) for encoding and decoding using the
 questions and answers from the dataset. Retrieves the questions and answers
 from the text files they were saved to.
 Returns encoded questions and answers, and a vocabulary table
@@ -28,17 +28,17 @@ def check_path(path):
 
 def prepare_dataset():
     #answer_path = path_to_data + 'answers.txt'
-    #question_path = path_to_data + 'questions.txt'    
+    #question_path = path_to_data + 'questions.txt'
     chars = get_all_notes('answers.txt').union(get_all_notes('questions.txt'))
     ctable = CharacterTable(chars)
-    
+
     questions = []    # input
     answers = []     # output
     print('Generating data...')
-    
+
     questions = get_tokenized_notes('questions.txt')
     answers = get_tokenized_notes('answers.txt')
-    
+
     print('Vectorization...')
     # TODO are x and y the encoded questions/answers?
     x = np.zeros((len(questions), MAXLEN, len(chars)), dtype=np.bool)
@@ -47,7 +47,7 @@ def prepare_dataset():
         x[i] = ctable.encode(sentence, MAXLEN)
     for i, sentence in enumerate(answers):
         y[i] = ctable.encode(sentence, MAXLEN)
-    
+
     return x, y, ctable, chars
 
 '''
@@ -81,27 +81,27 @@ def get_tokenized_notes(filename):
     for line in file.readlines():
         line = line.rstrip()
         tokens = line.split(' ')
-        
+
         if len(tokens) > MAXLEN:
             tokens = tokens[:MAXLEN]
         elif len(tokens) < MAXLEN:
             tokens = tokens + [' '] * (MAXLEN-len(tokens))
-        
+
         notes.append(tokens)
     return notes
 
 def clean_lines(lines):
-    
+
     notes = []
     for line in lines:
         line = line.rstrip()
         tokens = line.split(' ')
-        
+
         if len(tokens) > MAXLEN:
             tokens = tokens[:MAXLEN]
         elif len(tokens) < MAXLEN:
             tokens = tokens + [' '] * (MAXLEN-len(tokens))
-        
+
         notes.append(tokens)
     return notes
 
@@ -130,12 +130,12 @@ class CharacterTable(object):
         for i, c in enumerate(C):
             x[i, self.char_indices[c]] = 1
         return x
-    
+
     def decode(self, x, calc_argmax=True):
         if calc_argmax:
             x = x.argmax(axis=-1)
         return ' '.join(self.indices_char[x] for x in x)
-    
+
 '''
 Build the model given the number of tokens. Returns the model.
 '''
@@ -144,15 +144,15 @@ def build_model(num_tokens):
     RNN = layers.LSTM
     HIDDEN_SIZE = 128
     LAYERS = 3
-    
+
     print('Build model...')
     model = Sequential()
     model.add(RNN(HIDDEN_SIZE, input_shape=(MAXLEN, num_tokens)))
     model.add(layers.RepeatVector(MAXLEN))
-    
+
     for _ in range(LAYERS):
         model.add(RNN(HIDDEN_SIZE, return_sequences=True))
-    
+
     # Apply a dense layer to the every temporal slice of an input. For each of step
     # of the output sequence, decide which character should be chosen.
     model.add(layers.TimeDistributed(layers.Dense(num_tokens)))
@@ -166,7 +166,7 @@ def build_model(num_tokens):
 
 '''
 Train the model each generation and show predictions against the validation
-dataset. Takes the model, character table, questions (x) and answers (y), and 
+dataset. Takes the model, character table, questions (x) and answers (y), and
 batch size as inputs.
 '''
 def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
@@ -176,25 +176,25 @@ def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
     np.random.shuffle(indices)
     x = x[indices]
     y = y[indices]
-    
+
     # Explicitly set apart 10% for validation data that we never train over.
     split_at = len(x) - len(x) // 10
     (x_train, x_val) = x[:split_at], x[split_at:]
     (y_train, y_val) = y[:split_at], y[split_at:]
-    
+
     print('Training Data:')
     print(x_train.shape)
     print(y_train.shape)
-    
+
     print('Validation Data:')
     print(x_val.shape)
     print(y_val.shape)
-    
+
     # check if this file does not exist and save
     if model_name in os.listdir():
         model.load_weights(model_name)
     # change 1000 to number of epochs variable
-    for iteration in range(1000, 1):
+    for iteration in range(1, 1000):
         print()
         print('-' * 50)
         print('Iteration', iteration)
@@ -218,7 +218,7 @@ def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
                 print(colors.ok + '☑' + colors.close, end=' ')
             else:
                 print(colors.fail + '☒' + colors.close, end=' ')
-            print(guess)  
+            print(guess)
     model.save_weights(model_name)
 
 if __name__ == "__main__":
