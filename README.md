@@ -113,6 +113,6 @@ timidity <midi file>
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/IDTTb6FbX-k/0.jpg)](http://www.youtube.com/watch?v=IDTTb6FbX-k)
 
-##Team Members
+## Team Members
 
 Dalton Sumrall, Trase Westbrook, Austin Carpenter, Cassidy Matousek, Soe Than, Julia Vasquez
