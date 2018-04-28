@@ -126,7 +126,7 @@ if __name__ == "__main__":
 
     if model_name not in os.listdir():
         print("Must run train_model.py before generating. Exiting...")
-        print("Usage: train_model.py model_name path_to_question&answer")
+        print("Usage: train_model.py model_name")
         sys.exit(1)
         
     x, y, ctable, chars = md.prepare_dataset()
