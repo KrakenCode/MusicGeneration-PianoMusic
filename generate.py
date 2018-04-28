@@ -118,19 +118,18 @@ def select_random_note_sequence():
         
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: " + sys.argv[0] + " model_name path_to_questions&answer\n")
+    if len(sys.argv) != 2:
+        print("Usage: " + sys.argv[0] + " model_name\n")
         sys.exit(1)
     
     model_name = sys.argv[1]
-    path_to_qa = sys.argv[2]
 
     if model_name not in os.listdir():
         print("Must run train_model.py before generating. Exiting...")
         print("Usage: train_model.py model_name path_to_question&answer")
         sys.exit(1)
         
-    x, y, ctable, chars = md.prepare_dataset(path_to_qa)
+    x, y, ctable, chars = md.prepare_dataset()
     model = md.build_model(len(chars))
     model.load_weights(model_name)
     note_sequence = select_random_note_sequence()

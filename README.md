@@ -53,15 +53,14 @@ be added anyway.
 After the **questions.txt** and **answers.txt** text files have been generated, you can run **train_model.py** 
 to train the model. Run
 ```
-python train_model.py <model_name> <path_to_q&a_dir> 
+python train_model.py <model_name> 
 ```
-to train a model with the name **\<model_name\>**. **\<path_to_q&a_dir\>** should be a path to the directory in
-which the **questions.txt** and **answers.txt** files are located.
+to train a model with the name **\<model_name\>**.
 
 
 Once you have a trained model you can use **generate.py** to create a song. Run 
 ```
-python generate.py <model_name> <path_to_q&a_dir>
+python generate.py <model_name>
 ```
 where the **\<model_name\>** is the already trained model.
 
@@ -75,7 +74,7 @@ provided.
 
 To generate a song using our pre-trained model start by running
 ```
-python generate.py ourModel <path_to_q&a_dir>
+python generate.py ourModel
 ```
 which will generate a song using our model. 
 

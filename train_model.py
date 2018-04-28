@@ -26,11 +26,10 @@ def check_path(path):
     return path
 
 
-def prepare_dataset(path_to_data):
-    path_to_data = check_path(path_to_data)
-    answer_path = path_to_data + 'answers.txt'
-    question_path = path_to_data + 'questions.txt'    
-    chars = get_all_notes(answer_path).union(get_all_notes(question_path))
+def prepare_dataset():
+    #answer_path = path_to_data + 'answers.txt'
+    #question_path = path_to_data + 'questions.txt'    
+    chars = get_all_notes('answers.txt').union(get_all_notes('questions.txt'))
     ctable = CharacterTable(chars)
     
     questions = []    # input
@@ -223,12 +222,11 @@ def train_model(model, ctable, x, y, BATCH_SIZE, model_name):
     model.save_weights(model_name)
 
 if __name__ == "__main__":
-    if (len(sys.argv) < 3):
-        print("Usage: " + sys.argv[0] + " model_name path_to_question&answer\n")
+    if (len(sys.argv) != 2):
+        print("Usage: " + sys.argv[0] + " model_name\n")
         sys.exit(1)
     model_name = sys.argv[1]
-    path_to_data = sys.argv[2]
-    x, y, ctable, chars = prepare_dataset(path_to_data)
+    x, y, ctable, chars = prepare_dataset()
     model = build_model(len(chars))
     BATCH_SIZE = 128
     train_model(model, ctable, x, y, BATCH_SIZE, model_name)
