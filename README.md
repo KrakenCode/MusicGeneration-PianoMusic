@@ -104,7 +104,7 @@ provided.
 To generate a song using our pre-trained model start by running
 
 ```
-python generate.py trained_model
+python generate.py pirate_model
 ```
 
 which will generate a song using our model.
