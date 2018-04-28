@@ -50,13 +50,13 @@ recursively grabs the midi files from the dataset. If you forget to include the 
 be added anyway. 
 
 
-After the **questions.txt** and **answers.txt** text files have been generated you can run **train_model.py**, 
+After the **questions.txt** and **answers.txt** text files have been generated, you can run **train_model.py** 
 to train the model. Run
 ```
 python train_model.py <model_name> <path_to_q&a_dir> 
 ```
 to train a model with the name **\<model_name\>**. **\<path_to_q&a_dir\>** should be a path to the directory in
-which the **questions.txt** and **answers.txt** files are located
+which the **questions.txt** and **answers.txt** files are located.
 
 
 Once you have a trained model you can use **generate.py** to create a song. Run 
