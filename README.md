@@ -38,33 +38,36 @@ pip3 install music21
 ## Using KrakenKeys
 
 The generation of a song from scratch is broken up into three separate python files. 
-create_dataset.py, train_model.py, and generate.py. We have a included a small data set 
-in the directory "test_midi" which is in the github repo. 
+**create_dataset.py**, **train_model.py**, and **generate.py**. We have a included a small data set 
+in the directory **test_midi** which is in the github repo. 
 
-To generate the question and answer files needed for training, run 
+To generate the **questions.txt** and **answers.txt** files needed for training, run 
 ```
 python create_dataset.py <path_to_dataset>
 ```
-Include a '\*\*' after the directory to ensure that create_dataset.py 
+Include a '\*\*' after the directory to ensure that **create_dataset.py** 
 recursively grabs the midi files from the dataset. If you forget to include the '\*\*'s they will 
 be added anyway. 
 
-After the question and answer text files have been generated you can run train_model.py 
+
+After the **questions.txt** and **answers.txt** text files have been generated you can run **train_model.py**, 
 to train the model. Run
 ```
 python train_model.py <model_name> <path_to_q&a_dir> 
 ```
-to train a model with the name \<model_name\> on the questions and answers.
+to train a model with the name **\<model_name\>**. **\<path_to_q&a_dir\>** should be a path to the directory in
+which the **questions.txt** and **answers.txt** files are located
 
-Once you have a trained model you can use generate.py to create a song. Run 
+
+Once you have a trained model you can use **generate.py** to create a song. Run 
 ```
 python generate.py <model_name> <path_to_q&a_dir>
 ```
-where the \<model_name\> is the already trained model.
+where the **\<model_name\>** is the already trained model.
 
-A random sequence of five notes will be chosen from either answers.txt
-or questions.txt and be used to start the generation of a song. The song will be stored in a 
-file called "test.midi" which can be played using either "timidity" or Windows Media Player".
+A random sequence of five notes will be chosen from either **answers.txt**
+or **questions.txt** and be used to start the generation of a song. The song will be stored in a 
+file called **test.midi** which can be played using either **timidity** or **Windows Media Player**.
 
 We have included an already trained model in the github repo which will produce
 much better music compared to training a model on the small dataset that we 
