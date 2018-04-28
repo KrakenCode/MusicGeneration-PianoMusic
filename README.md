@@ -44,6 +44,21 @@ pip3 install music21
 
 ## Using KrakenKeys
 
+### Run Our Pre-Trained Model
+We have included an already trained model in the github repo which was trained
+on the midi files in the pirate_midis directory.
+
+To generate a song using our pre-trained model run
+
+```
+python generate.py pirate_model
+```
+
+which will generate the file test.midi
+
+
+### Train your own model
+
 The generation of a song from scratch is broken up into three separate python files.
 **create_dataset.py**, **train_model.py**, and **generate.py**. We have a included a small data set
 in the directory **test_midi** which is in the github repo.
@@ -96,18 +111,6 @@ A random sequence of five notes will be chosen from either **answers.txt**
 or **questions.txt** and be used to start the generation of a song. The song will be stored in a
 file called **test.midi** which can be played using either **timidity** or **Windows Media Player**.
 
-### Run Our Pre-Trained Model
-We have included an already trained model in the github repo which will produce
-much better music compared to training a model on the small dataset that we
-provided.
-
-To generate a song using our pre-trained model start by running
-
-```
-python generate.py pirate_model
-```
-
-which will generate a song using our model.
 
 ## Playing a MIDI
 
